@@ -1,4 +1,7 @@
 // libs
+import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config({ path: path.resolve(`./.env.local`) });
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -19,9 +22,10 @@ import { authenticateUser } from './utils/auth.js';
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 mongoose.connect(
-  'mongodb+srv://test:1234@cluster0-ypgh5.mongodb.net/test?retryWrites=true&w=majority',
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.DB_CLUSTER}/?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   },
 );
 mongoose.Promise = global.Promise;
